@@ -1,0 +1,31 @@
+# Python Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+.venv/
+env/
+venv/
+
+# OS-Spezifisches
+.DS_Store
+Thumbs.db
+
+# Streamlit Cache
+.streamlit/
+
+# Log-Dateien & Temp
+*.log
+*.tmp
+*.bak
+
+# VS Code Settings (optional)
+.vscode/
+
+# Jupyter (falls du später mal testest)
+.ipynb_checkpoints/
+
+# Data (falls du später größere CSVs etc. hast)
+data/*.csv
+data/*.json
