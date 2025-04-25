@@ -7,7 +7,7 @@ from ai.relevance_filter import relevance_score
 
 st.set_page_config(page_title="FinScope AI", layout="wide")
 st.title("🧠 FinScope AI – Smart Finance News Filter")
-
+score_threshold = st.slider("🎯 Minimum Relevance Score", min_value=0, max_value=100, value=30)
 st.markdown("This app fetches the latest financial news and prepares it for AI-based filtering. 🚀")
 
 # News anzeigen
@@ -18,14 +18,16 @@ filtered_news = [item for item in news if is_relevant(item["summary"])]
 scored_news = []
 for item in news:
     score = relevance_score(item["summary"])
-    if score > 0:
+    if score >= score_threshold:
         item["score"] = score
         scored_news.append(item)
 
 # Nach Score sortieren (höchste Relevanz oben)
 scored_news.sort(key=lambda x: x["score"], reverse=True)
-st.subheader("📰 Latest Headlines")
-for item in filtered_news:
-    st.markdown(f"### [{item['title']}]({item['link']})")
+st.subheader("🔥 Most Relevant News")
+
+for item in scored_news:
+    st.markdown(f"### {item['title']} ({item['score']}%)")
     st.write(item["summary"])
+    st.markdown(f"[Read more]({item['link']})")
     st.markdown("---")
