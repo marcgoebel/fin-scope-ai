@@ -6,6 +6,7 @@ from ai.relevance_filter import is_relevant
 from ai.relevance_filter import relevance_score
 import pandas as pd
 import matplotlib.pyplot as plt
+from wordcloud import WordCloud
 
 def score_color(score):
     if score >= 70:
@@ -54,6 +55,20 @@ if score_values:
 
     st.pyplot(fig)
 
+# WordCloud generieren
+if scored_news:
+    all_text = " ".join([item["summary"] for item in scored_news])
+
+    wordcloud = WordCloud(width=800, height=400, background_color='white').generate(all_text)
+
+    st.subheader("☁️ WordCloud of Filtered News Summaries")
+
+    fig_wc, ax_wc = plt.subplots(figsize=(10, 5))
+    ax_wc.imshow(wordcloud, interpolation='bilinear')
+    ax_wc.axis('off')
+
+    st.pyplot(fig_wc)
+    
 # Nach Score sortieren (höchste Relevanz oben)
 scored_news.sort(key=lambda x: x["score"], reverse=True)
 # Top 3 wichtigste News extrahieren
