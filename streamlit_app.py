@@ -7,6 +7,13 @@ from ai.relevance_filter import relevance_score
 import pandas as pd
 import matplotlib.pyplot as plt
 
+def score_color(score):
+    if score >= 70:
+        return "green"
+    elif score >= 40:
+        return "orange"
+    else:
+        return "red"
 
 st.set_page_config(page_title="FinScope AI", layout="wide")
 st.title("🧠 FinScope AI – Smart Finance News Filter")
@@ -62,7 +69,8 @@ for item in scored_news:
 st.subheader("🏆 Top 3 Most Relevant News")
 
 for idx, item in enumerate(top_news, start=1):
-    st.markdown(f"### {idx}. {item['title']} ({item['score']}%)")
+    color = score_color(item["score"])
+    st.markdown(f"### {idx}. <span style='color:{color}'>{item['title']} ({item['score']}%)</span>", unsafe_allow_html=True)
     st.write(item["summary"])
     st.markdown(f"[Read full article here]({item['link']})")
     st.markdown("---")
