@@ -24,7 +24,8 @@ score_threshold = st.slider("🎯 Minimum Relevance Score", min_value=0, max_val
 st.markdown("This app fetches the latest financial news and prepares it for AI-based filtering. 🚀")
 
 # News anzeigen
-news = get_finance_news()
+with st.spinner('🔄 Scraping finance news...'):
+    news = get_finance_news()
 filtered_news = [item for item in news if is_relevant(item["summary"])]
 
 # Scored News
