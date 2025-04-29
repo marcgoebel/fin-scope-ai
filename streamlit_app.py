@@ -18,6 +18,17 @@ def score_color(score):
 
 st.set_page_config(page_title="FinScope AI", layout="wide")
 st.title("🧠 FinScope AI – Smart Finance News Filter")
+topics = [
+    "inflation", "interest rate", "rate hike", "central bank", 
+    "ECB", "Fed", "recession", "unemployment", "monetary policy"
+]
+
+selected_topics = st.multiselect(
+    "📚 Select Topics to Focus On (optional)",
+    options=topics,
+    default=[]
+)
+
 if st.button("🔄 Refresh News Feed"):
     st.experimental_rerun()
 score_threshold = st.slider("🎯 Minimum Relevance Score", min_value=0, max_value=100, value=30)
@@ -44,6 +55,21 @@ if scored_news:
         file_name='filtered_finance_news.csv',
         mime='text/csv'
     )
+# Scored News, angepasst an ausgewählte Topics
+scored_news = []
+for item in news:
+    text = item["summary"].lower()
+    score = relevance_score(text)
+
+    if selected_topics:
+        if any(topic in text for topic in selected_topics):
+            if score >= score_threshold:
+                item["score"] = score
+                scored_news.append(item)
+    else:
+        if score >= score_threshold:
+            item["score"] = score
+            scored_news.append(item)
 
 # Verteilung der Scores
 score_values = [item["score"] for item in scored_news]
