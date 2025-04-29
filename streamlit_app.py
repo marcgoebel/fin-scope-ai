@@ -18,6 +18,8 @@ def score_color(score):
 
 st.set_page_config(page_title="FinScope AI", layout="wide")
 st.title("🧠 FinScope AI – Smart Finance News Filter")
+if st.button("🔄 Refresh News Feed"):
+    st.experimental_rerun()
 score_threshold = st.slider("🎯 Minimum Relevance Score", min_value=0, max_value=100, value=30)
 st.markdown("This app fetches the latest financial news and prepares it for AI-based filtering. 🚀")
 
