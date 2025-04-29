@@ -118,3 +118,18 @@ for idx, item in enumerate(top_news, start=1):
     st.write(item["summary"])
     st.markdown(f"[Read full article here]({item['link']})")
     st.markdown("---")
+
+if scored_news:
+    filtered_text = " ".join([item["summary"] for item in scored_news])
+
+    st.subheader("☁️ WordCloud of Selected Topics News")
+
+    wordcloud = WordCloud(
+        width=800, height=400, background_color='white', collocations=False
+    ).generate(filtered_text)
+
+    fig_wc, ax_wc = plt.subplots(figsize=(10, 5))
+    ax_wc.imshow(wordcloud, interpolation='bilinear')
+    ax_wc.axis('off')
+
+    st.pyplot(fig_wc)
