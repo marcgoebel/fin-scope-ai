@@ -7,6 +7,8 @@ from ai.relevance_filter import relevance_score
 import pandas as pd
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
+from collections import Counter
+from ai.relevance_filter import KEYWORDS
 
 def score_color(score):
     if score >= 70:
@@ -33,7 +35,6 @@ if st.button("🔄 Refresh News Feed"):
     st.experimental_rerun()
 score_threshold = st.slider("🎯 Minimum Relevance Score", min_value=0, max_value=100, value=30)
 st.markdown("This app fetches the latest financial news and prepares it for AI-based filtering. 🚀")
-st.markdown(f"🕒 _Published: {item['timestamp']}_")
 
 # News anzeigen
 with st.spinner('🔄 Scraping finance news...'):
@@ -98,7 +99,17 @@ if scored_news:
     ax_wc.axis('off')
 
     st.pyplot(fig_wc)
-    
+
+if scored_news:
+    all_text = " ".join([item["summary"].lower() for item in scored_news])
+    keyword_counts = {kw: all_text.count(kw.lower()) for kw in KEYWORDS}
+
+    # Sortiert nach Häufigkeit
+    sorted_counts = dict(sorted(keyword_counts.items(), key=lambda item: item[1], reverse=True))
+    st.markdown(f"🕒 _Published: {item['timestamp']}_")
+    st.subheader("📚 Keyword Occurrence Table")
+    st.table(sorted_counts)
+
 # Nach Score sortieren (höchste Relevanz oben)
 scored_news.sort(key=lambda x: x["score"], reverse=True)
 # Top 3 wichtigste News extrahieren
