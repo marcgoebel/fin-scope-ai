@@ -145,3 +145,7 @@ if scored_news:
     ax_wc.axis('off')
 
     st.pyplot(fig_wc)
+    
+if st.checkbox("🧾 Show raw data (JSON preview)"):
+    st.subheader("🛠 Raw News Data")
+    st.json(scored_news)
