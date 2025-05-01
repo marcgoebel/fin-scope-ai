@@ -99,6 +99,23 @@ if scored_news:
     ax_wc.axis('off')
 
     st.pyplot(fig_wc)
+from collections import Counter
+import re
+
+# Alle Wörter aus den Zusammenfassungen sammeln
+all_text = " ".join([item["summary"] for item in scored_news])
+words = re.findall(r'\b\w+\b', all_text.lower())
+
+# Optional: Stoppwörter ignorieren
+stopwords = set(["the", "and", "to", "in", "of", "for", "on", "with", "a", "is", "by", "as", "at", "from", "that", "this"])
+filtered_words = [word for word in words if word not in stopwords]
+
+# Häufigstes Wort finden
+if filtered_words:
+    top_word, top_count = Counter(filtered_words).most_common(1)[0]
+
+    st.subheader("📢 Most Trending Word")
+    st.markdown(f"**{top_word}** (mentioned {top_count}×)")
 
 if scored_news:
     all_text = " ".join([item["summary"].lower() for item in scored_news])
