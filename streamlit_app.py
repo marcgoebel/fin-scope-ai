@@ -115,6 +115,7 @@ scored_news.sort(key=lambda x: x["score"], reverse=True)
 # Top 3 wichtigste News extrahieren
 top_news = scored_news[:3]
 st.subheader("🔥 Most Relevant News")
+min_length = st.slider("🔤 Minimum Summary Length", min_value=50, max_value=500, value=150)
 
 for item in scored_news:
     st.markdown(f"### {item['title']} ({item['score']}%)")
@@ -149,3 +150,10 @@ if scored_news:
 if st.checkbox("🧾 Show raw data (JSON preview)"):
     st.subheader("🛠 Raw News Data")
     st.json(scored_news)
+
+for item in news:
+    if len(item["summary"]) >= min_length:
+        score = relevance_score(item["summary"])
+        if score >= score_threshold:
+            item["score"] = score
+            scored_news.append(item)
